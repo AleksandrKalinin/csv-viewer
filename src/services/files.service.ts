@@ -1,5 +1,6 @@
 import { httpRequest } from '@/api'
-import { filesRoutes } from './files.routes'
+
+const FILE_UPLOAD_PATH = '/upload'
 
 interface ISubjectGrade {
   [key: string]: number | string
@@ -7,5 +8,5 @@ interface ISubjectGrade {
 
 export const filesService = {
   uploadFile: (data: FormData) =>
-    httpRequest('multipart/form-data').post<ISubjectGrade>(filesRoutes.uploadFile(), data)
+    httpRequest('multipart/form-data').post<ISubjectGrade>(FILE_UPLOAD_PATH, data)
 }

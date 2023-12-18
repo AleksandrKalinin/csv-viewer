@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 
 import { ref } from 'vue'
 
-import { gradesService } from '@/services/grades/grades.service'
+import { gradesService } from '@/services/grades.service'
 import { catchError } from '@/utils/catchError'
 
 export const useGradesStore = defineStore('Grades store', () => {

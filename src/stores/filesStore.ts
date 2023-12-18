@@ -1,7 +1,7 @@
 import type { AxiosError } from 'axios'
 import { defineStore } from 'pinia'
 
-import { filesService } from '@/services/files/files.service'
+import { filesService } from '@/services/files.service'
 import { catchError } from '@/utils/catchError'
 
 import { useToast } from 'vue-toastification'
