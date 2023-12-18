@@ -125,39 +125,3 @@ export const options = computed<ChartOptions<'bar' | 'pie' | 'line'>>(() => {
     }
   }
 })
-
-const months = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December'
-]
-
-export const usersAmountData = {
-  labels: months,
-  datasets: [
-    {
-      label: '2021',
-      backgroundColor: '#0FCC1C',
-      data: [40, 25, 15, 39, 10, 40, 39, 60, 40, 20, 12, 11]
-    },
-    {
-      label: '2022',
-      backgroundColor: 'purple',
-      data: [30, 15, 25, 29, 50, 30, 19, 40, 20, 20, 12, 11]
-    },
-    {
-      label: '2023',
-      backgroundColor: 'yellow',
-      data: [40, 25, 15, 39, 10, 40, 39, 60, 40, 20, 12, 11]
-    }
-  ]
-}

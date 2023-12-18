@@ -1,4 +1,5 @@
 <template>
+  <h2 class="chart-title">Subjects data</h2>
   <Bar @click="onClick" ref="chartRef" :data="chartData" :options="options" />
 </template>
 
@@ -16,26 +17,12 @@ import {
 
 import { ref } from 'vue'
 import { Bar, getElementAtEvent, type ChartComponentRef } from 'vue-chartjs'
-import { options, data } from '../data'
+import { options, data } from './data'
 import { computed } from 'vue'
 
-const emit = defineEmits<(e: 'selectItem', value: any, key: string) => void>()
+const emit = defineEmits<(e: 'selectItem', value: any, key: string, title: string) => void>()
 
 const chartRef = ref<ChartComponentRef | null>(null)
-
-// const labels = computed(() => {
-//   const subjects: string[] = []
-//   for (const key in data) {
-//     const studentData: { [key: string]: number | string } = data[key as keyof typeof data]
-//     for (const subject in studentData) {
-//       if (!subjects.includes(subject)) {
-//         subjects.push(subject)
-//       }
-//     }
-//   }
-//   console.log('labels', subjects)
-//   return Object.keys(subjects)
-// })
 
 const subjectsAverage = computed(() => {
   const dataset = {} as { [key: string]: number }
@@ -93,9 +80,12 @@ const findMedianValue = (arr: number[]): number => {
 const elementAtEvent = (element: InteractionItem[]) => {
   if (!element.length) return
 
-  console.log(subjectsAverage.value)
-
-  emit('selectItem', subjectsAverage.value, 'Average value for each subject')
+  emit(
+    'selectItem',
+    subjectsAverage.value,
+    'Average value for each subject',
+    'Detailed view for subject'
+  )
 }
 
 const onClick = (event: MouseEvent) => {
@@ -129,3 +119,8 @@ const chartData = computed(() => {
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 </script>
+<style scoped lang="scss">
+.chart-title {
+  text-align: center;
+}
+</style>

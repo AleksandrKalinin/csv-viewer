@@ -9,6 +9,9 @@
   --color-font-secondary: #767676;
   --color-font-third: #e1e1e1;
 
+  --color-background-primary: #fafafa;
+  --color-background-white: #ffffff;
+
   --space-2xs: 4px;
   --space-xs: 8px;
   --space-s: 12px;
@@ -39,12 +42,4 @@
   --font-size-6xl: 48px;
   --font-size-7xl: 64px;
   --font-size-8xl: 96px;
-}
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  font-weight: normal;
 }
