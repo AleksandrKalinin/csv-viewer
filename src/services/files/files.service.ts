@@ -6,5 +6,6 @@ interface ISubjectGrade {
 }
 
 export const filesService = {
-  uploadFile: (data: FormData) => httpRequest('multipart/form-data').post<ISubjectGrade>(filesRoutes.uploadFile(), data)
+  uploadFile: (data: FormData) =>
+    httpRequest('multipart/form-data').post<ISubjectGrade>(filesRoutes.uploadFile(), data)
 }
