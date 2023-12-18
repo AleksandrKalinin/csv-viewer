@@ -102,7 +102,6 @@ export const data = {
 }
 
 export const options = computed<ChartOptions<'bar' | 'pie' | 'line'>>(() => {
-  console.log('working')
   return {
     responsive: true,
     maintainAspectRatio: false,
