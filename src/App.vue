@@ -1,6 +1,6 @@
 <template>
   <main class="main">
-    <FileUpload @handleFileUpload="uploadFile" />
+    <FileUpload @handleFileUpload="uploadCsvFile" />
     <div class="charts">
       <div class="charts__item">
         <UsersChart @selectItem="selectItem" />
@@ -44,6 +44,12 @@ const selectItem = (data: any, key: string, title: string) => {
   selectedItemTitle.value = title
   modal.value?.toggleModalStatus()
 }
+
+const uploadCsvFile = (file: File) => {
+  const formdata = new FormData()
+  formdata.append('file', file)
+  uploadFile(formdata)
+}
 </script>
 
 <style scoped lang="scss">
@@ -54,6 +60,7 @@ const selectItem = (data: any, key: string, title: string) => {
   padding: var(--space-2xl);
   background: var(--color-background-primary);
 }
+
 .charts {
   width: 100%;
   display: flex;
@@ -67,10 +74,24 @@ const selectItem = (data: any, key: string, title: string) => {
     height: 300px;
     max-height: 100%;
     width: 100%;
-    max-width: calc(100% - 1px);
+    max-width: calc(100% - 100px);
     background-color: var(--color-background-white);
     padding: var(--space-l) var(--space-l) var(--space-2xl);
     box-shadow: 0 4px 10px rgb(0 0 0 / 5%);
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  main {
+    flex-direction: column;
+  }
+
+  .charts {
+    padding: 0 var(--space-s);
+
+    &__item {
+      max-width: 100%;
+    }
   }
 }
 </style>

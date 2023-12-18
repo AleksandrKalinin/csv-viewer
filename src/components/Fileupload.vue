@@ -38,24 +38,14 @@ const emit = defineEmits<{
 }>()
 
 const fileupload = ref<HTMLInputElement | null>(null)
-const encodedFile = ref<string>('')
 
 const onFileUpload = async ($event: Event): Promise<void> => {
   const target = $event.target as HTMLInputElement
   console.log(target)
   if (target && target.files) {
-    encodedFile.value = (await toBase64(target.files[0])) as string
-    emit('handleFileUpload', encodedFile.value)
+    emit('handleFileUpload', target.files[0])
   }
 }
-
-const toBase64 = (fileInput: Blob) =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader()
-    reader.readAsDataURL(fileInput)
-    reader.onload = () => resolve(reader.result)
-    reader.onerror = (error) => reject(error)
-  })
 
 const dropHandler = (ev: DragEvent): void => {
   ev.preventDefault()
@@ -65,7 +55,7 @@ const dropHandler = (ev: DragEvent): void => {
       console.log(item.type)
       if (item.kind === 'file' && item.type === 'text/csv') {
         const file = item.getAsFile() as File
-        encodedFile.value = (await toBase64(file)) as string
+        emit('handleFileUpload', file)
       } else if (item.kind === 'file' && item.type !== 'text/csv') {
         toast('Incorrect file type!')
       }
@@ -148,6 +138,19 @@ const dragOverHandler = (ev: DragEvent): void => {
 
   &__submit {
     margin-top: var(--space-s);
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .imageupload {
+    &__wrapper {
+      margin-bottom: var(--space-xl);
+      max-width: 100%;
+    }
+
+    &__label {
+      min-width: auto;
+    }
   }
 }
 </style>

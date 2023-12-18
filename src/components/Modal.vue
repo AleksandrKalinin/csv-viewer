@@ -80,6 +80,7 @@ defineExpose({
     padding: var(--space-xl);
     background-color: #ffffff;
     border-radius: 10px;
+    max-width: 100%;
   }
 }
 </style>

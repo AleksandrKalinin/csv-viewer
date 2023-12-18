@@ -48,8 +48,11 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 <style scoped lang="scss">
 .selected-chart {
   background: #ffffff;
-  width: 600px;
+  width: 500px;
+  max-width: 100%;
   height: 300px;
+  padding-bottom: var(--space-m);
+
   &__title {
     margin-bottom: var(--space-2xs);
   }

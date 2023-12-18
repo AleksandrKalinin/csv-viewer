@@ -9,9 +9,9 @@ import { useToast } from 'vue-toastification'
 const toast = useToast()
 
 export const useFilesStore = defineStore('Files store', () => {
-  const uploadFile = async (file: File) => {
+  const uploadFile = async (data: FormData) => {
     try {
-      const response = await filesService.uploadFile(file)
+      const response = await filesService.uploadFile(data)
       if (response) {
         console.log(response)
         toast('File uploaded!')
