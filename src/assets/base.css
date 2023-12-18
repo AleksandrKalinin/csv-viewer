@@ -43,11 +43,3 @@
   --font-size-7xl: 64px;
   --font-size-8xl: 96px;
 }
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  font-weight: normal;
-}
