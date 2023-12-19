@@ -3,7 +3,16 @@
     <table class="table">
       <thead class="table__header table-header">
         <tr class="table-header__row">
-          <th class="table-header__cell" v-for="item in labels" :key="item">{{ item }}</th>
+          <th
+            class="table-header__cell"
+            v-for="item in labels"
+            :key="item"
+            @click="
+              emit('selectItem', 1, 'Average value for each subject', 'Detailed view for subject')
+            "
+          >
+            {{ item }}
+          </th>
         </tr>
       </thead>
       <tbody class="table__body table-body">
@@ -25,6 +34,8 @@
 defineProps<{
   labels: string[]
 }>()
+
+const emit = defineEmits<(e: 'selectItem', value: any, key: string, title: string) => void>()
 </script>
 
 <style scoped lang="scss">
@@ -43,9 +54,26 @@ defineProps<{
   width: 100%;
 
   &-header {
+    &__row {
+      background: var(--color-blue-lightest);
+    }
+
     &__cell {
+      cursor: pointer;
       text-align: left;
       font-weight: 600;
+    }
+  }
+
+  &-body {
+    &__row {
+      cursor: pointer;
+      transition: 0.1s ease;
+      background: var(--color-background-white);
+
+      &:hover {
+        background: var(--color-background-primary);
+      }
     }
   }
 
@@ -54,5 +82,23 @@ defineProps<{
     padding: var(--space-xs) var(--space-s);
     border: 1px solid var(--color-blue-light);
   }
+}
+
+::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+  cursor: pointer;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-background-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--color-font-third);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-font-secondary);
 }
 </style>

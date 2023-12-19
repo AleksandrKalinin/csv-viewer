@@ -78,7 +78,7 @@ defineExpose({
     align-items: center;
     justify-content: center;
     padding: var(--space-xl);
-    background-color: #ffffff;
+    background-color: var(--color-background-white);
     border-radius: 10px;
     max-width: 100%;
   }

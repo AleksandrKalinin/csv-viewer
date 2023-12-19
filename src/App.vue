@@ -1,20 +1,8 @@
 <template>
   <main class="main">
-    <FileUpload @handleFileUpload="uploadCsvFile" />
+    <FileUploader @handleFileUpload="uploadCsvFile" />
     <div class="info">
-      <!-- <div class="info__block">
-        <div class="info__chart">
-          <UsersChart @selectItem="selectItem" />
-        </div>
-        <Table :labels="labels" />
-      </div>
-      <div class="info__block">
-        <div class="info__chart">
-          <SubjectsChart @selectItem="selectItem" />
-        </div>
-        <Table :labels="labels" />
-      </div> -->
-      <div class="info__block">
+      <section class="info__block">
         <div class="info__chart">
           <BarChart
             @selectItem="selectItem"
@@ -23,8 +11,8 @@
           />
         </div>
         <DataTable :labels="subjectsLabels" />
-      </div>
-      <div class="info__block">
+      </section>
+      <section class="info__block">
         <div class="info__chart">
           <BarChart
             @selectItem="selectItem"
@@ -33,7 +21,7 @@
           />
         </div>
         <DataTable :labels="studentsLabels" />
-      </div>
+      </section>
     </div>
     <Modal ref="modal">
       <template #modal>
@@ -46,7 +34,7 @@
   </main>
 </template>
 <script setup lang="ts">
-import FileUpload from './components/FileUpload.vue'
+import FileUploader from './components/FileUploader.vue'
 import BarChart from './components/BarChart.vue'
 import DataTable from './components/DataTable.vue'
 import Modal from './components/Modal.vue'
@@ -86,7 +74,121 @@ const uploadCsvFile = (file: File) => {
   uploadFile(formdata)
 }
 
-const studentsLabels = ['John', 'Jack', 'Jenny']
+const studentsLabels = [
+  'John',
+  'Jack',
+  'Jenny',
+  'John',
+  'Jack',
+  'Jenny',
+  'John',
+  'Jack',
+  'Jenny',
+  'Jenny',
+  'John',
+  'Jack',
+  'Jenny',
+  'Jenny',
+  'John',
+  'Jack',
+  'Jenny',
+  'Jenny',
+  'John',
+  'Jack',
+  'Jenny',
+  'Jenny',
+  'John',
+  'Jack',
+  'Jenny',
+  'Jenny',
+  'John',
+  'Jack',
+  'Jenny',
+  'Jenny',
+  'John',
+  'Jack',
+  'Jenny',
+  'Jenny',
+  'John',
+  'Jack',
+  'Jenny',
+  'Jenny',
+  'John',
+  'Jack',
+  'Jenny',
+  'Jenny',
+  'John',
+  'Jack',
+  'Jenny',
+  'Jenny',
+  'John',
+  'Jack',
+  'Jenny',
+  'Jenny',
+  'John',
+  'Jack',
+  'Jenny',
+  'Jenny',
+  'John',
+  'Jack',
+  'Jenny',
+  'Jenny',
+  'John',
+  'Jack',
+  'Jenny',
+  'Jenny',
+  'John',
+  'Jack',
+  'Jenny',
+  'Jenny',
+  'John',
+  'Jack',
+  'Jenny',
+  'Jenny',
+  'John',
+  'Jack',
+  'Jenny',
+  'Jenny',
+  'John',
+  'Jack',
+  'Jenny',
+  'Jenny',
+  'John',
+  'Jack',
+  'Jenny',
+  'Jenny',
+  'John',
+  'Jack',
+  'Jenny',
+  'Jenny',
+  'John',
+  'Jack',
+  'Jenny',
+  'Jenny',
+  'John',
+  'Jack',
+  'Jenny',
+  'Jenny',
+  'John',
+  'Jack',
+  'Jenny',
+  'Jenny',
+  'John',
+  'Jack',
+  'Jenny',
+  'Jenny',
+  'John',
+  'Jack',
+  'Jenny',
+  'Jenny',
+  'John',
+  'Jack',
+  'Jenny',
+  'Jenny',
+  'John',
+  'Jack',
+  'Jenny'
+]
 const subjectsLabels = ['history', 'math', 'literature']
 
 const subjectsChartData = computed(() => {
@@ -114,12 +216,18 @@ const studentsChartData = computed(() => {
       {
         label: 'Average grade by student',
         backgroundColor: '#7ab3ef',
-        data: [34, 78, 15]
+        data: [
+          34, 78, 15, 34, 78, 15, 34, 78, 15, 34, 78, 15, 34, 78, 15, 34, 78, 15, 34, 78, 15, 34,
+          78, 15, 34, 78, 15, 34, 78, 15, 34, 78, 15, 34, 78, 15, 34, 78, 15, 34, 78, 15, 34, 78,
+          15, 34, 78, 15, 34, 78, 15, 34, 78, 15, 34, 78, 15, 34, 78, 15, 34, 78, 15, 34, 78, 15,
+          34, 78, 15, 34, 78, 15, 34, 78, 15, 34, 78, 15, 34, 78, 15, 34, 78, 15, 34, 78, 15, 34,
+          78, 15, 34, 78, 15, 34, 78, 15, 34, 78, 15, 34, 78, 15, 34, 78, 15, 34, 78, 15, 34, 78,
+          15, 34, 78, 15
+        ]
       }
     ]
   }
 })
-
 </script>
 
 <style scoped lang="scss">
@@ -135,7 +243,7 @@ const studentsChartData = computed(() => {
   width: 100%;
   display: flex;
   flex-direction: column;
-
+  overflow: hidden;
   align-items: center;
   gap: var(--space-xl);
   padding: 0 var(--space-xl);
@@ -143,13 +251,14 @@ const studentsChartData = computed(() => {
   &__block {
     display: flex;
     flex-direction: column;
+    overflow: hidden;
     gap: var(--space-6xl);
     max-height: 100%;
     width: 100%;
-    max-width: calc(100% - 100px);
     background-color: var(--color-background-white);
     padding: var(--space-l) var(--space-l) var(--space-2xl);
     box-shadow: 0 4px 10px rgb(0 0 0 / 5%);
+    position: relative;
   }
 
   &__chart {
@@ -158,7 +267,7 @@ const studentsChartData = computed(() => {
 }
 
 .selected-chart {
-  background: #ffffff;
+  background: var(--color-background-white);
   width: 500px;
   max-width: 100%;
   height: 300px;
@@ -169,13 +278,13 @@ const studentsChartData = computed(() => {
   }
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 992px) {
   main {
     flex-direction: column;
   }
 
   .info {
-    padding: 0 var(--space-s);
+    padding: 0;
 
     &__block {
       max-width: 100%;

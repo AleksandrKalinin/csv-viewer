@@ -14,7 +14,7 @@ export const useGradesStore = defineStore('Grades store', () => {
     try {
       const response = await gradesService.getAverageSubjectsGrades()
       if (response) {
-        console.log(response)
+        avgSubjectsGrades.value = response;
       }
     } catch (err) {
       catchError(err as AxiosError)
@@ -25,7 +25,7 @@ export const useGradesStore = defineStore('Grades store', () => {
     try {
       const response = await gradesService.getMedianSubjectsGrades()
       if (response) {
-        console.log(response)
+        medianSubjectsGrades.value = response;
       }
     } catch (err) {
       catchError(err as AxiosError)

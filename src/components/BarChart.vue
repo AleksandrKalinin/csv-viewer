@@ -52,5 +52,6 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 <style scoped lang="scss">
 .chart-title {
   text-align: center;
+  margin-bottom: var(--space-xs);
 }
 </style>

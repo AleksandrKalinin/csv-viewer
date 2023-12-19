@@ -13,8 +13,7 @@ export const useFilesStore = defineStore('Files store', () => {
     try {
       const response = await filesService.uploadFile(data)
       if (response) {
-        console.log(response)
-        toast('File uploaded!')
+        toast.success('File uploaded!')
       }
     } catch (err) {
       catchError(err as AxiosError)
