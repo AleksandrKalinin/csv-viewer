@@ -8,23 +8,40 @@ export interface IGrade {
 export interface IStudent {
   id: string
   name: string
-  grades: IGrade[]
+  createdAt: string
+  updatedAt: string
+  averageGrade: string
 }
 
 export interface ISubject {
   id: string
   name: string
-  grades: IGrade[]
-  medianGrade: IGrade
-  averageGrade: IGrade
+  medialGrade: number
+  averageGrade: string
+  createdAt: string
+  updatedAt: string
+}
+
+export interface IDecileStat {
+  id: string
+  name: string
+  createdAt: string
+  updatedAt: string
+  deciles: number[]
 }
 
 export interface IStudentGrades {
-  [key: string]: number
+  value: string
+  subject: {
+    name: string
+  }
 }
 
-export interface IStudentsData {
-  [key: string]: {
-    [key: string]: number | string
-  }
+export interface IStudentStat {
+  id: string
+  name: string
+  createdAt: string
+  updatedAt: string
+  averageGrade: string
+  grades: IStudentGrades[]
 }

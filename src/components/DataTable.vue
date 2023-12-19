@@ -3,27 +3,14 @@
     <table class="table">
       <thead class="table__header table-header">
         <tr class="table-header__row">
-          <th
-            class="table-header__cell"
-            v-for="item in labels"
-            :key="item"
-            @click="
-              emit('selectItem', 1, 'Average value for each subject', 'Detailed view for subject')
-            "
-          >
+          <th class="table-header__cell" v-for="(item, index) in labels" :key="index">
             {{ item }}
           </th>
         </tr>
       </thead>
       <tbody class="table__body table-body">
-        <tr class="table-body__row">
-          <td class="table-body__cell" v-for="item in labels" :key="item">{{ item }}</td>
-        </tr>
-        <tr class="table-body__row">
-          <td class="table-body__cell" v-for="item in labels" :key="item">{{ item }}</td>
-        </tr>
-        <tr class="table-body__row">
-          <td class="table-body__cell" v-for="item in labels" :key="item">{{ item }}</td>
+        <tr class="table-body__row" v-for="(item, index) in items" :key="index">
+          <td class="table-body__cell" v-for="(cell, id) in item" :key="id">{{ cell }}</td>
         </tr>
       </tbody>
     </table>
@@ -32,10 +19,9 @@
 
 <script setup lang="ts">
 defineProps<{
+  items: (string[] | number[])[]
   labels: string[]
 }>()
-
-const emit = defineEmits<(e: 'selectItem', value: any, key: string, title: string) => void>()
 </script>
 
 <style scoped lang="scss">
