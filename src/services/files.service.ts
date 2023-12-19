@@ -1,6 +1,6 @@
 import { httpRequest } from '@/api'
 
-const FILE_UPLOAD_PATH = '/upload'
+const FILE_UPLOAD_PATH = '/reports'
 
 interface ISubjectGrade {
   [key: string]: number | string

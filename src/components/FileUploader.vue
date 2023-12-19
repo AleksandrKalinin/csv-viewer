@@ -17,10 +17,10 @@
       @drop="dropHandler($event)"
       @dragover="dragOverHandler($event)"
     >
-      <UploadIcon />
-      <span class="imageupload__placeholder">
-        Drag-and-drop csv file, or click to select file to upload.
+      <span class="imageupload__icon">
+        <UploadIcon />
       </span>
+      <span class="imageupload__placeholder"> Choose a .csv file, or drag it here. </span>
     </label>
   </div>
 </template>
@@ -41,7 +41,6 @@ const fileupload = ref<HTMLInputElement | null>(null)
 
 const onFileUpload = async ($event: Event): Promise<void> => {
   const target = $event.target as HTMLInputElement
-  console.log(target)
   if (target && target.files) {
     emit('handleFileUpload', target.files[0])
   }
@@ -52,12 +51,11 @@ const dropHandler = (ev: DragEvent): void => {
 
   if (ev.dataTransfer?.items) {
     ;[...ev.dataTransfer.items].forEach(async (item) => {
-      console.log(item.type)
       if (item.kind === 'file' && item.type === 'text/csv') {
         const file = item.getAsFile() as File
         emit('handleFileUpload', file)
       } else if (item.kind === 'file' && item.type !== 'text/csv') {
-        toast('Incorrect file type!')
+        toast.error('Incorrect file type!')
       }
     })
   }
@@ -76,24 +74,9 @@ const dragOverHandler = (ev: DragEvent): void => {
   align-items: flex-end;
   position: relative;
 
-  &__delete {
-    position: absolute;
-    top: calc(var(--space-s) * -1);
-    right: calc(var(--space-s) * -1);
-    padding: var(--space-xs);
-    border-radius: 50%;
-    background: var(--color-blue-darkest);
-    cursor: pointer;
-    z-index: 2;
-  }
-
   &__icon {
-    width: var(--space-s);
-    height: var(--space-s);
-
-    :deep(path) {
-      fill: var(--color-font-third);
-    }
+    width: var(--space-xl);
+    height: var(--space-xl);
   }
 
   &__file {
@@ -123,6 +106,7 @@ const dragOverHandler = (ev: DragEvent): void => {
     overflow: hidden;
     cursor: pointer;
     background: var(--color-blue-lightest);
+    gap: var(--space-s);
   }
 
   &__placeholder {
@@ -141,7 +125,7 @@ const dragOverHandler = (ev: DragEvent): void => {
   }
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 992px) {
   .imageupload {
     &__wrapper {
       margin-bottom: var(--space-xl);

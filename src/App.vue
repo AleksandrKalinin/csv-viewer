@@ -1,80 +1,106 @@
 <template>
   <main class="main">
-    <FileUpload @handleFileUpload="uploadCsvFile" />
+    <FileUploader @handleFileUpload="uploadCsvFile" />
     <div class="info">
-      <!-- <div class="info__block">
-        <div class="info__chart">
-          <UsersChart @selectItem="selectItem" />
-        </div>
-        <Table :labels="labels" />
-      </div>
-      <div class="info__block">
-        <div class="info__chart">
-          <SubjectsChart @selectItem="selectItem" />
-        </div>
-        <Table :labels="labels" />
-      </div> -->
-      <div class="info__block">
+      <section class="info__block">
         <div class="info__chart">
           <BarChart
-            @selectItem="selectItem"
+            @selectItem="getDeciles"
             :chartData="subjectsChartData"
+            :items="avgSubjectsGrades"
             chartTitle="Subjects statistics"
           />
         </div>
-        <DataTable :labels="subjectsLabels" />
-      </div>
-      <div class="info__block">
+        <DataTable :labels="subjectsLabels" :items="subjectsData" />
+      </section>
+      <section class="info__block">
         <div class="info__chart">
           <BarChart
-            @selectItem="selectItem"
+            @selectItem="getSelected"
+            :items="avgStudentsGrades"
             :chartData="studentsChartData"
             chartTitle="Students statistics"
           />
         </div>
-        <DataTable :labels="studentsLabels" />
-      </div>
+        <DataTable
+          :labels="studentsLabels"
+          :items="[studentsData]"
+          @selectItem="getSelectedGrades"
+        />
+      </section>
     </div>
     <Modal ref="modal">
       <template #modal>
         <div class="selected-chart">
           <h3 class="selected-chart__title">{{ selectedItemTitle }}</h3>
-          <BarChart :chartData="selectedItemData" />
+          <BarChart v-if="selectedChartData" :chartData="selectedChartData" />
         </div>
       </template>
     </Modal>
   </main>
 </template>
 <script setup lang="ts">
-import FileUpload from './components/FileUpload.vue'
+import FileUploader from './components/FileUploader.vue'
 import BarChart from './components/BarChart.vue'
 import DataTable from './components/DataTable.vue'
 import Modal from './components/Modal.vue'
-import { computed, ref } from 'vue'
+import { useStudentsStore } from './stores/studentsStore'
+import { useSubjectsStore } from './stores/subjectsStore'
+
+const { avgStudentsGrades, selectedGrades } = storeToRefs(useStudentsStore())
+const { getAverageStudentsGrades, getSelectedGrades } = useStudentsStore()
+
+const { avgSubjectsGrades, decileGrades } = storeToRefs(useSubjectsStore())
+const { getAverageSubjectsGrades, getDecileGrades } = useSubjectsStore()
+
+import { computed, onMounted, ref } from 'vue'
 
 import { useFilesStore } from './stores/filesStore'
+import { storeToRefs } from 'pinia'
+import type { IStudentGrades } from './types'
 
 const { uploadFile } = useFilesStore()
 
 const modal = ref<InstanceType<typeof Modal> | null>(null)
 
-const selectedItemData = ref(null)
+const selectedItemData = ref<string[] | number[]>([])
 const selectedItemTitle = ref('')
+const selectedItemLabels = ref()
 
-const selectItem = (data: any, key: string, title: string) => {
-  selectedItemData.value = selectedChartData.value
-  selectedItemTitle.value = title
+const getDeciles = async (id: string) => {
+  await getDecileGrades(id)
+
+  if (decileGrades.value) {
+    selectedItemLabels.value = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
+    selectedItemData.value = decileGrades.value.deciles
+    selectedItemTitle.value = 'Deciles statistics'
+  }
+
+  modal.value?.toggleModalStatus()
+}
+
+const getSelected = async (id: string) => {
+  await getSelectedGrades(id)
+
+  if (selectedGrades.value) {
+    selectedItemLabels.value = selectedGrades.value.grades.map(
+      (grade: IStudentGrades) => grade.subject.name
+    )
+    selectedItemData.value = selectedGrades.value.grades.map((grade: IStudentGrades) => grade.value)
+    selectedItemTitle.value = 'Selected student statistics'
+  }
+
   modal.value?.toggleModalStatus()
 }
 
 const selectedChartData = computed(() => {
   return {
-    labels: studentsLabels,
+    labels: selectedItemLabels.value,
     datasets: [
       {
-        label: 'Average grade by student',
+        label: selectedItemTitle.value,
         backgroundColor: '#7ab3ef',
-        data: [34, 78, 15]
+        data: selectedItemData.value
       }
     ]
   }
@@ -86,40 +112,50 @@ const uploadCsvFile = (file: File) => {
   uploadFile(formdata)
 }
 
-const studentsLabels = ['John', 'Jack', 'Jenny']
-const subjectsLabels = ['history', 'math', 'literature']
+const dataAverage = computed(() => avgSubjectsGrades.value.map((subject) => subject.averageGrade))
+const dataMedian = computed(() => avgSubjectsGrades.value.map((subject) => subject.medialGrade))
+const subjectsLabels = computed(() => avgSubjectsGrades.value.map((subject) => subject.name))
+
+const subjectsData = computed(() => [dataAverage.value, dataMedian.value])
 
 const subjectsChartData = computed(() => {
   return {
-    labels: subjectsLabels,
+    labels: subjectsLabels.value,
     datasets: [
       {
         label: 'Average value',
         backgroundColor: '#1666ba',
-        data: [45, 56, 78]
+        data: dataAverage.value
       },
       {
         label: 'Median value',
         backgroundColor: '#368ce7',
-        data: [44, 45, 66]
+        data: dataMedian.value
       }
     ]
   }
 })
 
+const studentsData = computed(() => avgStudentsGrades.value.map((student) => student.averageGrade))
+const studentsLabels = computed(() => avgStudentsGrades.value.map((student) => student.name))
+
 const studentsChartData = computed(() => {
   return {
-    labels: studentsLabels,
+    labels: studentsLabels.value,
     datasets: [
       {
         label: 'Average grade by student',
         backgroundColor: '#7ab3ef',
-        data: [34, 78, 15]
+        data: studentsData.value
       }
     ]
   }
 })
 
+onMounted(() => {
+  getAverageSubjectsGrades()
+  getAverageStudentsGrades()
+})
 </script>
 
 <style scoped lang="scss">
@@ -135,7 +171,7 @@ const studentsChartData = computed(() => {
   width: 100%;
   display: flex;
   flex-direction: column;
-
+  overflow: hidden;
   align-items: center;
   gap: var(--space-xl);
   padding: 0 var(--space-xl);
@@ -143,13 +179,14 @@ const studentsChartData = computed(() => {
   &__block {
     display: flex;
     flex-direction: column;
+    overflow: hidden;
     gap: var(--space-6xl);
     max-height: 100%;
     width: 100%;
-    max-width: calc(100% - 100px);
     background-color: var(--color-background-white);
     padding: var(--space-l) var(--space-l) var(--space-2xl);
     box-shadow: 0 4px 10px rgb(0 0 0 / 5%);
+    position: relative;
   }
 
   &__chart {
@@ -158,7 +195,7 @@ const studentsChartData = computed(() => {
 }
 
 .selected-chart {
-  background: #ffffff;
+  background: var(--color-background-white);
   width: 500px;
   max-width: 100%;
   height: 300px;
@@ -169,13 +206,13 @@ const studentsChartData = computed(() => {
   }
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 992px) {
   main {
     flex-direction: column;
   }
 
   .info {
-    padding: 0 var(--space-s);
+    padding: 0;
 
     &__block {
       max-width: 100%;
@@ -183,3 +220,4 @@ const studentsChartData = computed(() => {
   }
 }
 </style>
+./stores/subjectsStore
